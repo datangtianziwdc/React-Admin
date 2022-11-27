@@ -1,0 +1,12 @@
+.route-active{
+  background: yellow;
+}
+.route{
+  background: green;
+}
+body,html{
+  height: 100%;
+  #root,.ant-layout{
+    height: 100%;
+  }
+}
