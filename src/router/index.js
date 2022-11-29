@@ -36,15 +36,15 @@ const routes = [
         element: <Home />,
       },
       {
-        path: 'rightList',
+        path: 'right-manage/right/list',
         element: <RightList />,
       },
       {
-        path: 'roleList',
+        path: 'right-manage/role/list',
         element: <RoleList />,
       },
       {
-        path: 'userList',
+        path: 'user-manage/list',
         element: <UserList />,
       },
       {

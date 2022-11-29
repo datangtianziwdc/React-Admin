@@ -2,17 +2,11 @@ import React, { useState } from 'react'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
-  SmileOutlined,
 } from '@ant-design/icons'
-import { Dropdown, Layout, Avatar, Menu, Image } from 'antd'
+import { Dropdown, Layout, Avatar,  Image } from 'antd'
 import './TopHeader.scss'
 import AvatarImg from '../../assets/avatar.gif'
-const { Header, Content, Sider } = Layout
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}))
+const { Header} = Layout
 const items = [
   { label: '超级管理员', key: 'item-1' }, // 菜单项务必填写 key
   { label: '退出登录', key: 'item-2', danger: true },
