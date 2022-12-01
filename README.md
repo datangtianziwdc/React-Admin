@@ -4,3 +4,8 @@
 ```npm i json-server -g```
 运行
 ```json-server --watch .\db.json --port 8000```
+## 打包预览
+全局安装serve包
+```npm i serve -g```
+在打包后的dist目录下执行
+```serve```

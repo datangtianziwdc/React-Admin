@@ -1,37 +1,67 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Tag, Button, Modal } from 'antd'
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { Table, Tag, Button, Modal, Switch } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 export default function RightList() {
   const [dataSource, setDataSource] = useState([])
-  useEffect(() => {
-    const getData = async () => {
-      const { data } = await axios.get(
-        'http://localhost:8000/rights?_embed=children'
-      )
-      setDataSource(
-        data.map((item) => {
-          if (item.children.length === 0) {
-            return {
-              ...item,
-              children: null,
-            }
-          } else {
-            return item
+  const getData = async () => {
+    const { data } = await axios.get(
+      'http://localhost:8000/rights?_embed=children'
+    )
+    setDataSource(
+      data.map((item) => {
+        if (item.children.length === 0) {
+          return {
+            ...item,
+            children: null,
           }
-        })
-      )
-    }
+        } else {
+          return item
+        }
+      })
+    )
+  }
+  useEffect(() => {
     getData()
   }, [])
-  const confirm = () => {
+  const confirm = (item) => {
+    console.log('item', item)
     Modal.confirm({
       title: '提示',
       icon: <ExclamationCircleOutlined />,
       content: '确定要删除该权限？',
       okText: '确认',
       cancelText: '取消',
+      onOk: async () => {
+        try {
+          // 如果是一级权限
+          if (item.grade === 1) {
+            await axios.delete(`http://localhost:8000/rights/${item.id}`)
+          } else {
+            await axios.delete(`http://localhost:8000/children/${item.id}`)
+          }
+          getData()
+        } catch (error) {
+          console.log('error', error)
+        }
+      },
+      onCancel: () => {
+        console.log('onCancel')
+      },
     })
+  }
+  const changeHandle = async (item) => {
+    // 如果是一级权限
+    if (item.grade === 1) {
+      await axios.patch(`http://localhost:8000/rights/${item.id}`, {
+        pagepermisson: item.pagepermisson === 1 ? 0 : 1,
+      })
+    } else {
+      await axios.patch(`http://localhost:8000/children/${item.id}`, {
+        pagepermisson: item.pagepermisson === 1 ? 0 : 1,
+      })
+    }
+    getData()
   }
 
   const columns = [
@@ -55,13 +85,22 @@ export default function RightList() {
     },
     {
       title: '操作',
-      render: () => {
+      render: (item) => {
         return (
           <div>
-            <Button type="primary" size="small">
-              编辑
-            </Button>
-            <Button danger type="primary" size="small" onClick={()=>confirm()}>
+            <Switch
+              checked={item.pagepermisson === 1||item.pagepermisson === undefined}
+              disabled={item.pagepermisson === undefined}
+              onChange={() => {
+                changeHandle(item)
+              }}
+            />
+            <Button
+              danger
+              type="primary"
+              size="small"
+              onClick={() => confirm(item)}
+            >
               删除
             </Button>
           </div>
