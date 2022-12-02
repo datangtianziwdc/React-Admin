@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Tag, Button, Modal, Switch } from 'antd'
+import { Table, Tag, Button, Modal, Switch, Space } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 export default function RightList() {
@@ -87,10 +87,14 @@ export default function RightList() {
       title: '操作',
       render: (item) => {
         return (
-          <div>
+          <Space>
             <Switch
-              checked={item.pagepermisson === 1||item.pagepermisson === undefined}
+              checked={
+                item.pagepermisson === 1 || item.pagepermisson === undefined
+              }
               disabled={item.pagepermisson === undefined}
+              checkedChildren="启用"
+              unCheckedChildren="禁用"
               onChange={() => {
                 changeHandle(item)
               }}
@@ -103,7 +107,7 @@ export default function RightList() {
             >
               删除
             </Button>
-          </div>
+          </Space>
         )
       },
     },

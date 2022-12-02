@@ -1,16 +1,36 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, Modal } from 'antd'
+import { Table, Button, Modal, Tree, message,Space } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
-
 export default function RoleList() {
+  const [messageApi, contextHolder] = message.useMessage()
   const [dataSource, setDataSource] = useState([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [rightList, setRightList] = useState(false)
+  const [currentRight, setCurrentRight] = useState({})
+  const [rightId, setRightId] = useState(0)
   const getData = async () => {
     const { data } = await axios.get('http://localhost:8000/roles')
     setDataSource(data)
   }
+  const getRightList = async () => {
+    const { data } = await axios.get(
+      'http://localhost:8000/rights?_embed=children'
+    )
+    setRightList(data)
+  }
+  const patchRights = async () => {
+    axios.patch(`http://localhost:8000/roles/${rightId}`, {
+      rights: currentRight,
+    })
+    messageApi.open({
+      type: 'success',
+      content: '保存成功',
+    })
+  }
   useEffect(() => {
     getData()
+    getRightList()
   }, [])
   const confirm = (item) => {
     console.log('item', item)
@@ -51,18 +71,58 @@ export default function RoleList() {
       render: (item) => {
         return (
           <div>
-            <Button
-              danger
-              type="primary"
-              size="small"
-              onClick={() => confirm(item)}
-            >
-              删除
-            </Button>
+            <Space>
+              <Button
+                danger
+                type="primary"
+                size="small"
+                onClick={() => confirm(item)}
+              >
+                删除
+              </Button>
+              <Button
+                type="primary"
+                size="small"
+                onClick={() => {
+                  setIsModalOpen(true)
+                  setCurrentRight(item.rights)
+                  setRightId(item.id)
+                  console.log('currentRight', currentRight)
+                }}
+              >
+                编辑
+              </Button>
+            </Space>
           </div>
         )
       },
     },
   ]
-  return <Table dataSource={dataSource} columns={columns} rowKey="id" />
+  return (
+    <>
+      {contextHolder}
+      <Table dataSource={dataSource} columns={columns} rowKey="id" />
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={() => {
+          setIsModalOpen(false)
+          patchRights()
+        }}
+        onCancel={() => setIsModalOpen(false)}
+      >
+        <Tree
+          checkable
+          checkStrictly
+          fieldNames={{ title: 'label' }}
+          checkedKeys={currentRight}
+          onCheck={(checkKeys) => {
+            console.log('checkKeys', checkKeys)
+            setCurrentRight(checkKeys)
+          }}
+          treeData={rightList}
+        />
+      </Modal>
+    </>
+  )
 }
