@@ -5,16 +5,21 @@ import {
   SmileOutlined,
 } from '@ant-design/icons'
 import { Dropdown, Layout, Avatar, Image, notification } from 'antd'
+import { useNavigate } from 'react-router-dom'
 import './TopHeader.scss'
 import AvatarImg from '../../assets/avatar.gif'
 const { Header } = Layout
-const items = [
-  { label: '超级管理员', key: 'item-1' }, // 菜单项务必填写 key
-  { label: '退出登录', key: 'item-2', danger: true },
-]
 export default function TopHeader() {
+  const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
   const [collapsed, setCollapsed] = useState(false)
+  const items = [
+    { label: '超级管理员', key: 'item-1' }, // 菜单项务必填写 key
+    { label: '退出登录', key: 'item-2', danger: true,onClick:()=>{
+      localStorage.removeItem('token')
+      navigate('/login',{replace:true})
+    } },
+  ]
   const changeCollapsed = () => {
     setCollapsed(!collapsed)
   }

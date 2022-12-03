@@ -10,12 +10,12 @@
       "roleId": 1
     },
     {
-      "username": "钢蛋",
+      "username": "毛蛋",
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "亚洲",
-      "roleId": 2,
+      "region": "南极洲",
+      "roleId": 3,
       "id": 3
     },
     {
@@ -30,7 +30,7 @@
     {
       "username": "西门吹灯",
       "password": "123",
-      "roleState": true,
+      "roleState": false,
       "default": false,
       "region": "南极洲",
       "roleId": 3,
@@ -80,6 +80,24 @@
       "roleState": true,
       "default": false,
       "id": 10
+    },
+    {
+      "username": "王大锤",
+      "password": "1121",
+      "region": "",
+      "roleId": 1,
+      "roleState": true,
+      "default": false,
+      "id": 11
+    },
+    {
+      "username": "刘亦菲",
+      "password": "1121",
+      "region": "亚洲",
+      "roleId": 2,
+      "roleState": true,
+      "default": false,
+      "id": 12
     }
   ],
   "roles": [
@@ -385,69 +403,69 @@
   "categories": [
     {
       "id": 1,
-      "title": "时事新闻1",
+      "label": "时事新闻1",
       "value": "时事新闻"
     },
     {
       "id": 2,
-      "title": "环球经济",
+      "label": "环球经济",
       "value": "环球经济"
     },
     {
       "id": 3,
-      "title": "科学技术2",
+      "label": "科学技术2",
       "value": "科学技术"
     },
     {
       "id": 4,
-      "title": "军事世界",
+      "label": "军事世界",
       "value": "军事世界"
     },
     {
       "id": 5,
-      "title": "世界体育",
+      "label": "世界体育",
       "value": "世界体育"
     },
     {
       "id": 6,
-      "title": "生活理财",
+      "label": "生活理财",
       "value": "生活理财"
     }
   ],
   "regions": [
     {
       "id": 1,
-      "title": "亚洲",
+      "label": "亚洲",
       "value": "亚洲"
     },
     {
       "id": 2,
-      "title": "欧洲",
+      "label": "欧洲",
       "value": "欧洲"
     },
     {
       "id": 3,
-      "title": "北美洲",
+      "label": "北美洲",
       "value": "北美洲"
     },
     {
       "id": 4,
-      "title": "南美洲",
+      "label": "南美洲",
       "value": "南美洲"
     },
     {
       "id": 5,
-      "title": "非洲",
+      "label": "非洲",
       "value": "非洲"
     },
     {
       "id": 6,
-      "title": "大洋洲",
+      "label": "大洋洲",
       "value": "大洋洲"
     },
     {
       "id": 7,
-      "title": "南极洲",
+      "label": "南极洲",
       "value": "南极洲"
     }
   ],
@@ -750,7 +768,7 @@
       },
       "category": {
         "id": 4,
-        "title": "军事世界",
+        "label": "军事世界",
         "value": "军事世界"
       }
     },

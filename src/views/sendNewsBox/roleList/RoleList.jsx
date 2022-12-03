@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Button, Modal, Tree, message,Space } from 'antd'
+import { Table, Button, Modal, Tree, message, Space } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 export default function RoleList() {
@@ -121,6 +121,11 @@ export default function RoleList() {
             setCurrentRight(checkKeys)
           }}
           treeData={rightList}
+          locale={{
+            Empty: {
+              description: '暂无数据'
+            },
+          }}
         />
       </Modal>
     </>

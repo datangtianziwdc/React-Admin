@@ -5,7 +5,7 @@ import SendNewsBox from '../views/sendNewsBox/SendNewsBox'
 import Home from '../views/sendNewsBox/home/Home'
 import RightList from '../views/sendNewsBox/rightList/RightList'
 import RoleList from '../views/sendNewsBox/roleList/RoleList'
-import UserList from '../views/sendNewsBox/userList/UserList'
+import UserList from '../views/sendNewsBox/user-manage/UserList'
 import NoPremission from '../views/sendNewsBox/noPremission/NoPremission'
 // RequireAuth 组件相当于一个拦截器，是否返回被拦截的组件要听他的
 function RequireAuth({ children }) {
