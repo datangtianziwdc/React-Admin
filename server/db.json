@@ -98,6 +98,24 @@
       "roleState": true,
       "default": false,
       "id": 12
+    },
+    {
+      "username": "迪丽热巴",
+      "password": "123456",
+      "region": "北美洲",
+      "roleId": 3,
+      "roleState": true,
+      "default": false,
+      "id": 13
+    },
+    {
+      "username": "赵子龙",
+      "password": "123456",
+      "region": "南美洲",
+      "roleId": 3,
+      "roleState": true,
+      "default": false,
+      "id": 14
     }
   ],
   "roles": [
@@ -105,38 +123,35 @@
       "id": 1,
       "roleName": "超级管理员",
       "roleType": 1,
-      "rights": {
-        "checked": [
-          "/user-manage/add",
-          "/user-manage/delete",
-          "/user-manage/update",
-          "/right-manage",
-          "/right-manage/right/list",
-          "/right-manage/role/update",
-          "/right-manage/right/update",
-          "/news-manage",
-          "/news-manage/list",
-          "/news-manage/add",
-          "/news-manage/update/:id",
-          "/news-manage/preview/:id",
-          "/news-manage/draft",
-          "/news-manage/category",
-          "/audit-manage",
-          "/audit-manage/audit",
-          "/audit-manage/list",
-          "/publish-manage",
-          "/publish-manage/unpublished",
-          "/publish-manage/published",
-          "/publish-manage/sunset",
-          "/user-manage/list",
-          "/right-manage/role/list",
-          "/right-manage/role/delete",
-          "/right-manage/right/delete",
-          "/home",
-          "/user-manage"
-        ],
-        "halfChecked": []
-      }
+      "rights": [
+        "/user-manage/add",
+        "/user-manage/delete",
+        "/user-manage/update",
+        "/right-manage",
+        "/right-manage/right/list",
+        "/right-manage/role/update",
+        "/right-manage/right/update",
+        "/news-manage",
+        "/news-manage/list",
+        "/news-manage/add",
+        "/news-manage/update/:id",
+        "/news-manage/preview/:id",
+        "/news-manage/draft",
+        "/news-manage/category",
+        "/audit-manage",
+        "/audit-manage/audit",
+        "/audit-manage/list",
+        "/publish-manage",
+        "/publish-manage/unpublished",
+        "/publish-manage/published",
+        "/publish-manage/sunset",
+        "/user-manage/list",
+        "/right-manage/role/list",
+        "/right-manage/role/delete",
+        "/right-manage/right/delete",
+        "/home",
+        "/user-manage"
+      ]
     },
     {
       "id": 2,
@@ -361,7 +376,7 @@
       "id": 1,
       "label": "首页",
       "key": "/home",
-      "pagepermisson": 0,
+      "pagepermisson": 1,
       "grade": 1
     },
     {

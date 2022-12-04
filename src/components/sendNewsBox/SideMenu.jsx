@@ -7,7 +7,7 @@ import {
 import { Layout, Menu } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
-import { delObjByKey } from '../../utils/common'
+import { delObjByKey, getUserInfo } from '../../utils/common'
 import './SideMenu.scss'
 const { Sider } = Layout
 const iconMap = {
@@ -25,6 +25,9 @@ export default function SideMenu() {
   const defaultOpenKeys = ['/' + location.pathname.split('/')[1]]
   console.log('defaultSelectedKeys', defaultSelectedKeys, defaultOpenKeys)
   const [menus, setMenu] = useState([])
+  const {
+    role: { rights },
+  } = getUserInfo()
   useEffect(() => {
     // ant-menu-submenu-active ant-menu-submenu-selected
     const getData = async () => {
@@ -32,7 +35,7 @@ export default function SideMenu() {
         'http://localhost:8000/rights?_embed=children'
       )
       const routes = data
-        .filter((item) => item.pagepermisson === 1)
+        .filter((item) => item.pagepermisson === 1 && rights.includes(item.key))
         .map((item) => {
           if (item.children.length === 0) {
             return {
@@ -59,7 +62,9 @@ export default function SideMenu() {
             return {
               ...item,
               children: item.children
-                ?.filter((e) => e.pagepermisson === 1)
+                ?.filter(
+                  (e) => e.pagepermisson === 1 && rights.includes(item.key)
+                )
                 .map((e) => delObjByKey(e, 'rightId')),
               onClick: (e) => {
                 console.log('onClick', e)
@@ -78,9 +83,9 @@ export default function SideMenu() {
         })
       console.log('routes', routes)
       setMenu(routes)
-      setTimeout(()=>{
+      setTimeout(() => {
         setClass()
-      },200)
+      }, 200)
     }
     // 用来解决antd刷新时默认展开的menu缺少class的bug
     const setClass = () => {

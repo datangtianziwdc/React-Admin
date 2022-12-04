@@ -8,17 +8,24 @@ import { Dropdown, Layout, Avatar, Image, notification } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import './TopHeader.scss'
 import AvatarImg from '../../assets/avatar.gif'
+import { getUserInfo } from '../../utils/common'
 const { Header } = Layout
 export default function TopHeader() {
+  const userInfo = getUserInfo()
   const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
   const [collapsed, setCollapsed] = useState(false)
   const items = [
-    { label: '超级管理员', key: 'item-1' }, // 菜单项务必填写 key
-    { label: '退出登录', key: 'item-2', danger: true,onClick:()=>{
-      localStorage.removeItem('token')
-      navigate('/login',{replace:true})
-    } },
+    { label: userInfo.role.roleName, key: 'item-1' }, // 菜单项务必填写 key
+    {
+      label: '退出登录',
+      key: 'item-2',
+      danger: true,
+      onClick: () => {
+        localStorage.clear()
+        navigate('/login', { replace: true })
+      },
+    },
   ]
   const changeCollapsed = () => {
     setCollapsed(!collapsed)
@@ -26,13 +33,13 @@ export default function TopHeader() {
   const openNotification = () => {
     api.open({
       message: '消息通知',
-      description: '欢迎回来：王大锤',
+      description: `欢迎回来：${userInfo.username}`,
       icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-      duration: 2
+      duration: 2,
     })
   }
   useEffect(() => {
-    openNotification();
+    openNotification()
   }, [])
   return (
     <>
@@ -48,12 +55,13 @@ export default function TopHeader() {
         )}
         <Dropdown menu={{ items }}>
           <div className="user">
-            欢迎回来
             <Avatar
               shape="square"
               size="large"
+              style={{marginRight:'10px'}}
               src={<Image src={AvatarImg} preview={false} />}
             />
+            <div>{userInfo.username}</div>
           </div>
         </Dropdown>
       </Header>

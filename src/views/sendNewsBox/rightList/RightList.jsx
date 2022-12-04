@@ -103,6 +103,7 @@ export default function RightList() {
               danger
               type="primary"
               size="small"
+              disabled={item.pagepermisson === undefined}
               onClick={() => confirm(item)}
             >
               删除

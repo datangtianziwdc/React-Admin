@@ -3,6 +3,7 @@ import { Table, Button, Modal, message, Space, Switch } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import UserForm from '../../../components/user-manage/UserForm'
+import { getUserInfo } from '../../../utils/common'
 export default function UserList() {
   const [messageApi, contextHolder] = message.useMessage()
   const [dataSource, setDataSource] = useState([]) // 列表
@@ -13,10 +14,15 @@ export default function UserList() {
   const [regionOptions, setRegionOptions] = useState([])
   const addForm = useRef(null)
   const updateForm = useRef(null)
+  const { roleId, region } = getUserInfo()
   // 获取用户列表
   const getData = async () => {
     const { data } = await axios.get('http://localhost:8000/users?_expand=role')
-    setDataSource(data)
+    setDataSource(
+      data.filter((e) =>
+        e.roleId >= roleId && region === '' ? true : e.region === region
+      )
+    )
   }
   const getRegions = async () => {
     const { data } = await axios.get('http://localhost:8000/regions')
@@ -67,6 +73,8 @@ export default function UserList() {
   }
   useEffect(() => {
     getData()
+  }, [roleId,region])
+  useEffect(() => {
     getRegions()
   }, [])
   const confirm = (item) => {

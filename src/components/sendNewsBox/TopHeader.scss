@@ -6,8 +6,12 @@
         right: 24px;
         top: 50%;
         transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
         &:hover{
             cursor: pointer;
+            background-color: rgba($color: #7e7c7c, $alpha: 0.1);
         }
     }
 }

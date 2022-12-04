@@ -7,10 +7,11 @@ import RightList from '../views/sendNewsBox/rightList/RightList'
 import RoleList from '../views/sendNewsBox/roleList/RoleList'
 import UserList from '../views/sendNewsBox/user-manage/UserList'
 import NoPremission from '../views/sendNewsBox/noPremission/NoPremission'
+import { getToken } from '../utils/common'
 // RequireAuth 组件相当于一个拦截器，是否返回被拦截的组件要听他的
 function RequireAuth({ children }) {
   console.log('children', children)
-  const authed = localStorage.getItem('token') || ''
+  const authed = getToken()
 
   return authed.length > 0 ? ( // 判断 localstorage 中登录状态是否为 true
     children
