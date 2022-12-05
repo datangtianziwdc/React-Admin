@@ -14,7 +14,7 @@ export default function UserList() {
   const [regionOptions, setRegionOptions] = useState([])
   const addForm = useRef(null)
   const updateForm = useRef(null)
-  const { roleId, region } = getUserInfo()
+  const { roleId, region,id } = getUserInfo()
   // 获取用户列表
   const getData = async () => {
     const { data } = await axios.get('http://localhost:8000/users?_expand=role')
@@ -73,7 +73,8 @@ export default function UserList() {
   }
   useEffect(() => {
     getData()
-  }, [roleId,region])
+  }, [roleId, region])
+
   useEffect(() => {
     getRegions()
   }, [])
@@ -138,7 +139,7 @@ export default function UserList() {
             checked={roleState}
             checkedChildren="启用"
             unCheckedChildren="禁用"
-            disabled={item.default}
+            disabled={item.default||item.id === id}
             onChange={() => {
               patchUsers(item)
             }}
@@ -156,7 +157,7 @@ export default function UserList() {
                 danger
                 type="primary"
                 size="small"
-                disabled={item.default}
+                disabled={item.default||item.id === id}
                 onClick={() => confirm(item)}
               >
                 删除
@@ -164,7 +165,7 @@ export default function UserList() {
               <Button
                 type="primary"
                 size="small"
-                disabled={item.default}
+                disabled={item.default||item.id === id}
                 onClick={async () => {
                   setCurrentInfo(item)
                   await setUpdateVisible(true)
@@ -209,11 +210,13 @@ export default function UserList() {
         onCancel={() => resetForm()}
       >
         <UserForm
+          handleType="new"
           ref={addForm}
           onOk={(formData) => {
             addRole(formData)
           }}
           regionDisabled={regionDisabled}
+          currentInfo={currentInfo}
         />
       </Modal>
       <Modal
@@ -228,12 +231,14 @@ export default function UserList() {
         onCancel={() => resetUpdateForm()}
       >
         <UserForm
+          handleType="update"
           ref={updateForm}
           onOk={(formData) => {
             // addRole(formData)
             patchUserInfo(formData)
           }}
           regionDisabled={regionDisabled}
+          currentInfo={currentInfo}
         />
       </Modal>
     </>

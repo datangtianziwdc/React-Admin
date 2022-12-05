@@ -6,10 +6,12 @@ import React, {
 } from 'react'
 import { Form, Input, Select } from 'antd'
 import axios from 'axios'
+import { getUserInfo } from '../../utils/common'
 
 const UserForm = forwardRef((props, ref) => {
-  console.log('ref====', ref)
-  const { onOk } = props
+  const { roleId, region, id, role } = getUserInfo()
+  const { onOk, handleType, currentInfo } = props
+  console.log('currentInfo', currentInfo.id === id)
   //   暴露当前ref的函数
   useImperativeHandle(ref, () => ({
     validateForm,
@@ -40,16 +42,70 @@ const UserForm = forwardRef((props, ref) => {
   const setForm = (item) => {
     form.setFieldsValue(item)
   }
+  // 获取区域列表
   const getRegions = async () => {
     const { data } = await axios.get('http://localhost:8000/regions')
-    setRegionOptions(data)
+    let newArr = []
+    // 新增操作
+    if (handleType === 'new') {
+      switch (roleId) {
+        // 区域管理员
+        case 2:
+          newArr = data.filter((e) => e.value === region)
+          break
+        // 超级管理员
+        default:
+          newArr = data
+          break
+      }
+      // 编辑操作
+    } else {
+      switch (roleId) {
+        // 区域管理员
+        case 2:
+          newArr = data.filter((e) => e.value === region)
+          break
+        // 超级管理员
+        default:
+          newArr = data
+          break
+      }
+    }
+    setRegionOptions(newArr)
   }
+  // 获取角色列表
   const getRoles = async () => {
     const { data } = await axios.get('http://localhost:8000/roles')
+    let newArr = []
+    // 新增操作
+    if (handleType === 'new') {
+      switch (roleId) {
+        // 区域管理员
+        case 2:
+          newArr = data.filter((e) => e.roleType > 2)
+          break
+        // 超级管理员
+        default:
+          newArr = data
+          break
+      }
+      // 编辑操作
+    } else {
+      switch (roleId) {
+        // 区域管理员
+        case 2:
+          newArr = data.filter((e) => e.roleType > 2)
+          break
+        // 超级管理员
+        default:
+          newArr = data
+          break
+      }
+    }
     setRoleOptions(
-      data.map((e) => {
+      newArr.map((e) => {
         return {
-          value: e.id,
+          value: e.roleType,
           label: e.roleName,
         }
       })
@@ -81,7 +137,7 @@ const UserForm = forwardRef((props, ref) => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="请输入用户名" />
       </Form.Item>
       <Form.Item
         label="密码"
@@ -93,7 +149,7 @@ const UserForm = forwardRef((props, ref) => {
           },
         ]}
       >
-        <Input />
+        <Input placeholder="请输入密码" />
       </Form.Item>
       <Form.Item
         label="区域"
@@ -105,7 +161,11 @@ const UserForm = forwardRef((props, ref) => {
           },
         ]}
       >
-        <Select options={regionOptions} disabled={disabled} />
+        <Select
+          placeholder="请选择区域"
+          options={regionOptions}
+          disabled={disabled || (handleType === 'update' && roleId === 2)}
+        />
       </Form.Item>
       <Form.Item
         label="角色"
@@ -118,6 +178,7 @@ const UserForm = forwardRef((props, ref) => {
         ]}
       >
         <Select
+          placeholder="请选择角色"
           options={roleOptions}
           onChange={(val) => {
             if (val === 1) {
@@ -127,6 +188,7 @@ const UserForm = forwardRef((props, ref) => {
             }
             setDisabled(val === 1)
           }}
+          disabled={handleType === 'update' && roleId === 2}
         />
       </Form.Item>
     </Form>

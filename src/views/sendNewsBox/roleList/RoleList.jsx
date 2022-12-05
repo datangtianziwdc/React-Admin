@@ -20,8 +20,9 @@ export default function RoleList() {
     setRightList(data)
   }
   const patchRights = async () => {
+    console.log("currentRight",currentRight.checked)
     axios.patch(`http://localhost:8000/roles/${rightId}`, {
-      rights: currentRight,
+      rights: currentRight.checked,
     })
     messageApi.open({
       type: 'success',
@@ -103,7 +104,9 @@ export default function RoleList() {
       {contextHolder}
       <Table dataSource={dataSource} columns={columns} rowKey="id" />
       <Modal
-        title="Basic Modal"
+        title="权限编辑"
+        okText="确定"
+        cancelText="取消"
         open={isModalOpen}
         onOk={() => {
           setIsModalOpen(false)
@@ -123,7 +126,7 @@ export default function RoleList() {
           treeData={rightList}
           locale={{
             Empty: {
-              description: '暂无数据'
+              description: '暂无数据',
             },
           }}
         />
