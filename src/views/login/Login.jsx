@@ -12,7 +12,7 @@ export default function Login() {
   const onFinish = async(values) => {
     console.log('Received values of form: ', values)
     const {username,password} = values
-    const {data} = await axios.get(`http://localhost:8000/users?username=${username}&password=${password}&roleState=${true}&_expand=role`)
+    const {data} = await axios.get(`/users?username=${username}&password=${password}&roleState=${true}&_expand=role`)
     console.log("data",data)
     if(data.length === 0){
       message.error("用户名或密码不正确！")

@@ -1,8 +1,11 @@
 import './App.scss'
 import { NavLink, useRoutes } from 'react-router-dom'
+import './utils/nprogress'
+import './utils/axios'
 import routes from './router'
+import AuthEntication from './components/authEntication/index'
 function App() {
-  const element = useRoutes(routes)
+  let element = useRoutes(routes)
   // const computedActive = ({ isActive }) => {
   //   return isActive ? 'route-active' : 'route'
   // }
@@ -16,7 +19,7 @@ function App() {
           新闻
         </NavLink>
       </div> */}
-      {element}
+      <AuthEntication>{element}</AuthEntication>
     </>
   )
 }

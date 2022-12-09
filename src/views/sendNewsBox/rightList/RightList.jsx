@@ -6,7 +6,7 @@ export default function RightList() {
   const [dataSource, setDataSource] = useState([])
   const getData = async () => {
     const { data } = await axios.get(
-      'http://localhost:8000/rights?_embed=children'
+      '/rights?_embed=children'
     )
     setDataSource(
       data.map((item) => {
@@ -36,9 +36,9 @@ export default function RightList() {
         try {
           // 如果是一级权限
           if (item.grade === 1) {
-            await axios.delete(`http://localhost:8000/rights/${item.id}`)
+            await axios.delete(`/rights/${item.id}`)
           } else {
-            await axios.delete(`http://localhost:8000/children/${item.id}`)
+            await axios.delete(`/children/${item.id}`)
           }
           getData()
         } catch (error) {
@@ -53,11 +53,11 @@ export default function RightList() {
   const changeHandle = async (item) => {
     // 如果是一级权限
     if (item.grade === 1) {
-      await axios.patch(`http://localhost:8000/rights/${item.id}`, {
+      await axios.patch(`/rights/${item.id}`, {
         pagepermisson: item.pagepermisson === 1 ? 0 : 1,
       })
     } else {
-      await axios.patch(`http://localhost:8000/children/${item.id}`, {
+      await axios.patch(`/children/${item.id}`, {
         pagepermisson: item.pagepermisson === 1 ? 0 : 1,
       })
     }

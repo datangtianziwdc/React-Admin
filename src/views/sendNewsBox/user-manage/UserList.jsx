@@ -17,7 +17,7 @@ export default function UserList() {
   const { roleId, region,id } = getUserInfo()
   // 获取用户列表
   const getData = async () => {
-    const { data } = await axios.get('http://localhost:8000/users?_expand=role')
+    const { data } = await axios.get('/users?_expand=role')
     setDataSource(
       data.filter((e) =>
         e.roleId >= roleId && region === '' ? true : e.region === region
@@ -25,12 +25,12 @@ export default function UserList() {
     )
   }
   const getRegions = async () => {
-    const { data } = await axios.get('http://localhost:8000/regions')
+    const { data } = await axios.get('/regions')
     setRegionOptions(data)
   }
   // 修改用户启用状态
   const patchUsers = async (item) => {
-    await axios.patch(`http://localhost:8000/users/${item.id}`, {
+    await axios.patch(`/users/${item.id}`, {
       roleState: !item.roleState,
     })
     messageApi.open({
@@ -42,12 +42,12 @@ export default function UserList() {
   // 更新用户信息
   const patchUserInfo = async (item) => {
     console.log('更新的用户信息', item, currentInfo)
-    await axios.patch(`http://localhost:8000/users/${currentInfo.id}`, item)
+    await axios.patch(`/users/${currentInfo.id}`, item)
     getData()
   }
   // 插入用户数据
   const addRole = async (role) => {
-    await axios.post(`http://localhost:8000/users`, {
+    await axios.post(`/users`, {
       ...role,
       roleState: true,
       default: false,
@@ -88,7 +88,7 @@ export default function UserList() {
       cancelText: '取消',
       onOk: async () => {
         try {
-          await axios.delete(`http://localhost:8000/users/${item.id}`)
+          await axios.delete(`/users/${item.id}`)
           getData()
         } catch (error) {
           console.log('error', error)

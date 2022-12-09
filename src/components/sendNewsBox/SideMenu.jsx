@@ -3,27 +3,30 @@ import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
+  HomeOutlined,
+  AppstoreOutlined,
+  CloudUploadOutlined,
 } from '@ant-design/icons'
 import { Layout, Menu } from 'antd'
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { delObjByKey, getUserInfo } from '../../utils/common'
 import './SideMenu.scss'
+import { routerMap } from './routerMap'
 const { Sider } = Layout
 const iconMap = {
-  '/home': <NotificationOutlined />,
+  '/home': <HomeOutlined />,
   '/user-manage': <UserOutlined />,
   '/right-manage': <LaptopOutlined />,
   '/news-manage': <NotificationOutlined />,
-  '/audit-manage': <NotificationOutlined />,
-  '/publish-manage': <NotificationOutlined />,
+  '/audit-manage': <AppstoreOutlined />,
+  '/publish-manage': <CloudUploadOutlined />,
 }
 export default function SideMenu() {
   const navigate = useNavigate()
   const location = useLocation()
   const defaultSelectedKeys = [location.pathname]
   const defaultOpenKeys = ['/' + location.pathname.split('/')[1]]
-  console.log('defaultSelectedKeys', defaultSelectedKeys, defaultOpenKeys)
   const [menus, setMenu] = useState([])
   const {
     role: { rights },
@@ -32,7 +35,7 @@ export default function SideMenu() {
     // ant-menu-submenu-active ant-menu-submenu-selected
     const getData = async () => {
       const { data } = await axios.get(
-        'http://localhost:8000/rights?_embed=children'
+        '/rights?_embed=children'
       )
       const routes = data
         .filter((item) => item.pagepermisson === 1 && rights.includes(item.key))
@@ -90,10 +93,9 @@ export default function SideMenu() {
     // 用来解决antd刷新时默认展开的menu缺少class的bug
     const setClass = () => {
       const openDom = document.querySelectorAll('.ant-menu-submenu-open')[0]
-      console.log('openDmo', openDom)
       if (openDom) {
         openDom.className =
-          'ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-active ant-menu-submenu-selected hhh'
+          'ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-active ant-menu-submenu-selected'
       }
     }
     getData()

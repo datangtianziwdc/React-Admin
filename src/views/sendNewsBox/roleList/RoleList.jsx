@@ -10,18 +10,18 @@ export default function RoleList() {
   const [currentRight, setCurrentRight] = useState({})
   const [rightId, setRightId] = useState(0)
   const getData = async () => {
-    const { data } = await axios.get('http://localhost:8000/roles')
+    const { data } = await axios.get('/roles')
     setDataSource(data)
   }
   const getRightList = async () => {
     const { data } = await axios.get(
-      'http://localhost:8000/rights?_embed=children'
+      '/rights?_embed=children'
     )
     setRightList(data)
   }
   const patchRights = async () => {
     console.log("currentRight",currentRight.checked)
-    axios.patch(`http://localhost:8000/roles/${rightId}`, {
+    axios.patch(`/roles/${rightId}`, {
       rights: currentRight.checked,
     })
     messageApi.open({
@@ -43,7 +43,7 @@ export default function RoleList() {
       cancelText: '取消',
       onOk: async () => {
         try {
-          await axios.delete(`http://localhost:8000/roles/${item.id}`)
+          await axios.delete(`/roles/${item.id}`)
           getData()
         } catch (error) {
           console.log('error', error)

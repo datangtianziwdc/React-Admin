@@ -44,7 +44,7 @@ const UserForm = forwardRef((props, ref) => {
   }
   // 获取区域列表
   const getRegions = async () => {
-    const { data } = await axios.get('http://localhost:8000/regions')
+    const { data } = await axios.get('/regions')
     let newArr = []
     // 新增操作
     if (handleType === 'new') {
@@ -75,7 +75,7 @@ const UserForm = forwardRef((props, ref) => {
   }
   // 获取角色列表
   const getRoles = async () => {
-    const { data } = await axios.get('http://localhost:8000/roles')
+    const { data } = await axios.get('/roles')
     let newArr = []
     // 新增操作
     if (handleType === 'new') {
