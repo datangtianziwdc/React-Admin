@@ -27,7 +27,7 @@ export const setUserInfo = (info) => {
   localStorage.setItem('user', JSON.stringify(info))
 }
 export const getUserInfo = () => {
-  return JSON.parse(localStorage.getItem('user')) || {}
+  return JSON.parse(localStorage.getItem('user')) || null
 }
 export const setToken = (info) => {
   localStorage.setItem('token', JSON.stringify(info))

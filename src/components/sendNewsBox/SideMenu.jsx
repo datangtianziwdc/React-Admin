@@ -25,7 +25,7 @@ const iconMap = {
 export default function SideMenu() {
   const navigate = useNavigate()
   const location = useLocation()
-  const defaultSelectedKeys = [location.pathname]
+  const [defaultSelectedKeys,setDefaultSelectedKeys] = useState([])
   const defaultOpenKeys = ['/' + location.pathname.split('/')[1]]
   const [menus, setMenu] = useState([])
   const {
@@ -34,9 +34,7 @@ export default function SideMenu() {
   useEffect(() => {
     // ant-menu-submenu-active ant-menu-submenu-selected
     const getData = async () => {
-      const { data } = await axios.get(
-        '/rights?_embed=children'
-      )
+      const { data } = await axios.get('/rights?_embed=children')
       const routes = data
         .filter((item) => item.pagepermisson === 1 && rights.includes(item.key))
         .map((item) => {
@@ -86,20 +84,23 @@ export default function SideMenu() {
         })
       console.log('routes', routes)
       setMenu(routes)
-      setTimeout(() => {
-        setClass()
-      }, 200)
-    }
-    // 用来解决antd刷新时默认展开的menu缺少class的bug
-    const setClass = () => {
-      const openDom = document.querySelectorAll('.ant-menu-submenu-open')[0]
-      if (openDom) {
-        openDom.className =
-          'ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-active ant-menu-submenu-selected'
-      }
     }
     getData()
+    setTimeout(() => {
+      setClass()
+    }, 200)
   }, [])
+  // 用来解决antd刷新时默认展开的menu缺少class的bug
+  const setClass = () => {
+    const openDom = document.querySelectorAll('.ant-menu-submenu-open')[0]
+    if (openDom) {
+      openDom.className =
+        'ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-active ant-menu-submenu-selected'
+    }
+  }
+  useEffect(()=>{
+    setDefaultSelectedKeys([location.pathname])
+  },[location.pathname])
   return (
     <Sider width={200} className="site-layout-background">
       <div className="flex-col">
