@@ -9,7 +9,8 @@ import './loding.scss'
 
 export default function AuthEntication({ children }) {
   const { pathname } = useLocation()
-  const [routeArr, setRouteArr] = useState([])
+  // const [routeArr, setRouteArr] = useState([])
+  let routeArr = []
   const [loading, setLoading] = useState(true)
   const [notFount, setNotFound] = useState(true)
   const [noPremission, setNoPremission] = useState(true)
@@ -17,18 +18,26 @@ export default function AuthEntication({ children }) {
   const whiteList = ['/login']
   const getRoutes = async () => {
     const routesResponse = await axios.get('/rights')
+    console.log('routesResponse', routesResponse)
     const childrenResponse = await axios.get('/children')
-    setRouteArr([...routesResponse.data, ...childrenResponse.data])
-    if(routeArr.length>0){
+    console.log('childrenResponse', childrenResponse)
+    // setRouteArr([...routesResponse.data, ...childrenResponse.data])
+    routeArr = [...routesResponse.data, ...childrenResponse.data]
+    if (routeArr.length > 0) {
       localStorage.setItem('routes', JSON.stringify(routeArr))
     }
+    setPermission()
   }
   const setPermission = () => {
-    console.log('setPermission', pathname)
+    console.log('setPermission', pathname, routeArr.length)
+    if(routeArr.length === 0){
+      return
+    }
     let routeList =
       routeArr.length > 0
         ? routeArr
         : JSON.parse(localStorage.getItem('routes'))
+    console.log('路由列表', routeList)
     console.log(
       '路由列表是否存在',
       routeList.findIndex((e) => e.key === pathname) !== -1,
