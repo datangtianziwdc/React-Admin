@@ -96,7 +96,13 @@ export default function NewsAdd() {
           </Form.Item>
         </Form>
       </div>
-      <div className={current === 1 ? '' : style.hidden}><NewsEditer></NewsEditer></div>
+      <div className={current === 1 ? '' : style.hidden}>
+        <NewsEditer
+          getContent={(value) => {
+            console.log('value', value)
+          }}
+        ></NewsEditer>
+      </div>
       <div className={current === 2 ? '' : style.hidden}>33333333333</div>
       <Space>
         {current === 2 && (
@@ -112,11 +118,7 @@ export default function NewsAdd() {
             下一步
           </Button>
         )}
-        {current > 0 && (
-          <Button onClick={() => handlePre()}>
-            上一步
-          </Button>
-        )}
+        {current > 0 && <Button onClick={() => handlePre()}>上一步</Button>}
       </Space>
     </>
   )
