@@ -1,29 +1,62 @@
 import React, { useState, useEffect } from 'react'
-import { Steps, Button, Row, Space, Form, Input, Select } from 'antd'
+import { Steps, Button, Row, Space, Form, Input, Select, message, notification } from 'antd'
 import style from './News.module.scss'
 import axios from 'axios'
 import NewsEditer from '../../../components/news-manage/NewsEditer'
+import { getUserInfo } from '../../../utils/common'
+import { useNavigate } from 'react-router-dom'
 const { Option } = Select
 export default function NewsAdd() {
+  const navigate = useNavigate()
+  const userInfo = getUserInfo()
   const [current, setCurrent] = useState(0)
   const [categories, setCategories] = useState([])
   const [newsForm] = Form.useForm()
+  const [formInfo, setFormInfo] = useState({})
+  const [content, setContent] = useState('')
   const handleNext = () => {
     if (current === 0) {
       newsForm
         .validateFields()
         .then((res) => {
+          setFormInfo(res)
           setCurrent(current + 1)
         })
         .catch((err) => {
           console.log('err', err)
         })
     } else {
-      setCurrent(current + 1)
+      if (content === '' || content.trim() === '<p></p>') {
+        message.error('新闻内容不能为空')
+      } else {
+        setCurrent(current + 1)
+      }
     }
   }
   const handlePre = () => {
     setCurrent(current - 1)
+  }
+  const handleSave = (auditState) => {
+    axios
+      .post('/news', {
+        ...formInfo,
+        content,
+        region: userInfo.region ? userInfo.region : '全球',
+        author: userInfo.username,
+        roleId: userInfo.roleId,
+        auditState,
+        publishState: 0,
+        createTime: Date.now(),
+        star: 0,
+        view: 0,
+      })
+      .then((res) => {
+        navigate(auditState === 0 ? '/news-manage/draft' : '/audit-manage/list')
+        notification.info({
+          message:"通知",
+          description:`您可以到${auditState===0?'草稿箱':'审核列表'}中查看您的新闻`
+        })
+      })
   }
   useEffect(() => {
     async function getData() {
@@ -36,7 +69,7 @@ export default function NewsAdd() {
     <>
       <div>撰写新闻</div>
       <Steps
-        current={0}
+        current={current}
         items={[
           {
             title: '基本信息',
@@ -99,7 +132,7 @@ export default function NewsAdd() {
       <div className={current === 1 ? '' : style.hidden}>
         <NewsEditer
           getContent={(value) => {
-            console.log('value', value)
+            setContent(value)
           }}
         ></NewsEditer>
       </div>
@@ -108,8 +141,8 @@ export default function NewsAdd() {
         {current === 2 && (
           <Row>
             <Space>
-              <Button type="primary">保存草稿箱</Button>
-              <Button danger>提交审核</Button>
+              <Button type="primary" onClick={()=>handleSave(0)}>保存草稿箱</Button>
+              <Button danger onClick={()=>handleSave(1)}>提交审核</Button>
             </Space>
           </Row>
         )}
