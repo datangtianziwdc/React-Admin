@@ -113,5 +113,5 @@ export default function RightList() {
       },
     },
   ]
-  return <Table dataSource={dataSource} columns={columns} />
+  return <Table dataSource={dataSource} columns={columns} rowKey={item=>item.id}/>
 }

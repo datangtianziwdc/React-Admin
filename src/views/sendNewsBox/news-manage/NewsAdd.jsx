@@ -40,6 +40,7 @@ export default function NewsAdd() {
     axios
       .post('/news', {
         ...formInfo,
+        categoryId:formInfo.category,
         content,
         region: userInfo.region ? userInfo.region : '全球',
         author: userInfo.username,

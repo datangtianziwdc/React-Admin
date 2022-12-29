@@ -26,7 +26,7 @@ export default function SideMenu() {
   const navigate = useNavigate()
   const location = useLocation()
   const [defaultSelectedKeys,setDefaultSelectedKeys] = useState([])
-  const defaultOpenKeys = ['/' + location.pathname.split('/')[1]]
+  const [defaultOpenKeys,setDefaultOpenKeys] = useState(['/' + location.pathname.split('/')[1]])
   const [menus, setMenu] = useState([])
   const {
     role: { rights },
@@ -100,6 +100,7 @@ export default function SideMenu() {
   }
   useEffect(()=>{
     setDefaultSelectedKeys([location.pathname])
+    setDefaultOpenKeys(['/' + location.pathname.split('/')[1]])
   },[location.pathname])
   return (
     <Sider width={200} className="site-layout-background">
