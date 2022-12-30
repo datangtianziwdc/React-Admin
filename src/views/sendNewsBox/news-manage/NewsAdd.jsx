@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Steps, Button, Row, Space, Form, Input, Select, message, notification } from 'antd'
+import {
+  Steps,
+  Button,
+  Space,
+  Form,
+  Input,
+  Select,
+  message,
+  Result,
+} from 'antd'
 import style from './News.module.scss'
 import axios from 'axios'
 import NewsEditer from '../../../components/news-manage/NewsEditer'
@@ -14,6 +23,7 @@ export default function NewsAdd() {
   const [newsForm] = Form.useForm()
   const [formInfo, setFormInfo] = useState({})
   const [content, setContent] = useState('')
+  const [auditState, setAuditState] = useState(0)
   const handleNext = () => {
     if (current === 0) {
       newsForm
@@ -36,11 +46,20 @@ export default function NewsAdd() {
   const handlePre = () => {
     setCurrent(current - 1)
   }
-  const handleSave = (auditState) => {
+  const go = () => {
+    navigate(auditState === 0 ? '/news-manage/draft' : '/audit-manage/list')
+  }
+  const reset = () => {
+    newsForm.resetFields()
+    setCurrent(0)
+    setContent('')
+  }
+  const handleSave = (state) => {
+    setAuditState(state)
     axios
       .post('/news', {
         ...formInfo,
-        categoryId:formInfo.category,
+        categoryId: formInfo.category,
         content,
         region: userInfo.region ? userInfo.region : '全球',
         author: userInfo.username,
@@ -52,11 +71,7 @@ export default function NewsAdd() {
         view: 0,
       })
       .then((res) => {
-        navigate(auditState === 0 ? '/news-manage/draft' : '/audit-manage/list')
-        notification.info({
-          message:"通知",
-          description:`您可以到${auditState===0?'草稿箱':'审核列表'}中查看您的新闻`
-        })
+        handleNext()
       })
   }
   useEffect(() => {
@@ -68,8 +83,9 @@ export default function NewsAdd() {
   }, [])
   return (
     <>
-      <div>撰写新闻</div>
+      <div className="fs24 fw5 mb20">撰写新闻</div>
       <Steps
+        className={`${style.step}`}
         current={current}
         items={[
           {
@@ -81,18 +97,19 @@ export default function NewsAdd() {
             description: '新闻主体内容',
           },
           {
-            title: '新闻提交',
-            description: '保存草稿或者提交审核',
+            title: '撰写完成',
+            description: '',
           },
         ]}
       />
       {/* 步骤 */}
-      <div className={current === 0 ? '' : style.hidden}>
+      <div className={current === 0 ? style.form : style.hidden}>
         <Form
           name="basic"
           initialValues={{
             remember: true,
           }}
+          className="mb20"
           autoComplete="off"
           form={newsForm}
         >
@@ -129,31 +146,43 @@ export default function NewsAdd() {
             </Select>
           </Form.Item>
         </Form>
+        <Button type="primary" onClick={() => handleNext()}>
+          下一步
+        </Button>
       </div>
-      <div className={current === 1 ? '' : style.hidden}>
+      <div className={current === 1 ? style.editer : style.hidden}>
         <NewsEditer
           getContent={(value) => {
             setContent(value)
           }}
         ></NewsEditer>
-      </div>
-      <div className={current === 2 ? '' : style.hidden}>33333333333</div>
-      <Space>
-        {current === 2 && (
-          <Row>
-            <Space>
-              <Button type="primary" onClick={()=>handleSave(0)}>保存草稿箱</Button>
-              <Button danger onClick={()=>handleSave(1)}>提交审核</Button>
-            </Space>
-          </Row>
-        )}
-        {current < 2 && (
-          <Button type="primary" onClick={() => handleNext()}>
-            下一步
+        <Space>
+          <Button type="primary" onClick={() => handleSave(0)}>
+            保存草稿箱
           </Button>
-        )}
-        {current > 0 && <Button onClick={() => handlePre()}>上一步</Button>}
-      </Space>
+          <Button danger onClick={() => handleSave(1)}>
+            提交审核
+          </Button>
+          <Button onClick={() => handlePre()}>上一步</Button>
+        </Space>
+      </div>
+      <div className={current === 2 ? style.result : style.hidden}>
+        <Result
+          status="success"
+          title={`已成功${auditState === 0 ? '保存至草稿箱' : '提交审核'}`}
+          subTitle={`您可以到${
+            auditState === 0 ? '草稿箱' : '审核列表'
+          }中查看您的新闻`}
+          extra={[
+            <Button type="primary" key="go" onClick={() => go()}>
+              去查看
+            </Button>,
+            <Button key="again" onClick={() => reset()}>
+              再写一篇
+            </Button>,
+          ]}
+        />
+      </div>
     </>
   )
 }
