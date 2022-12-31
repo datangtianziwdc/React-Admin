@@ -155,6 +155,7 @@ export default function NewsAdd() {
           getContent={(value) => {
             setContent(value)
           }}
+          content={content}
         ></NewsEditer>
         <Space>
           <Button type="primary" onClick={() => handleSave(0)}>

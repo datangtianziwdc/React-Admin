@@ -27,6 +27,7 @@ export default function SideMenu() {
   const location = useLocation()
   const [defaultSelectedKeys,setDefaultSelectedKeys] = useState([])
   const [defaultOpenKeys,setDefaultOpenKeys] = useState(['/' + location.pathname.split('/')[1]])
+  const [openKeys,setOpenKeys] = useState(['/' + location.pathname.split('/')[1]])
   const [menus, setMenu] = useState([])
   const {
     role: { rights },
@@ -98,9 +99,15 @@ export default function SideMenu() {
         'ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-active ant-menu-submenu-selected'
     }
   }
+  const onOpenChange = (openKeys)=>{
+    console.log("onOpenChange回调",openKeys)
+    setDefaultOpenKeys(openKeys[1])
+  }
   useEffect(()=>{
-    setDefaultSelectedKeys([location.pathname])
     setDefaultOpenKeys(['/' + location.pathname.split('/')[1]])
+    setDefaultSelectedKeys([location.pathname])
+    console.log("openKeys",['/' + location.pathname.split('/')[1]])
+    // setOpenKeys()
   },[location.pathname])
   return (
     <Sider width={200} className="site-layout-background">
@@ -110,9 +117,10 @@ export default function SideMenu() {
           <Menu
             mode="inline"
             selectedKeys={defaultSelectedKeys}
-            defaultOpenKeys={defaultOpenKeys}
+            openKeys={defaultOpenKeys}
             style={{ height: '100%', borderRight: 0 }}
             items={menus}
+            onOpenChange={onOpenChange}
           />
         </div>
       </div>
