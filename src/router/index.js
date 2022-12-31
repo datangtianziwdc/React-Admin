@@ -16,6 +16,8 @@ import AuditList from '../views/sendNewsBox/audit-manage/AuditList'
 import Unpublished from '../views/sendNewsBox/publish-manage/Unpublished'
 import Published from '../views/sendNewsBox/publish-manage/Published'
 import Sunset from '../views/sendNewsBox/publish-manage/Sunset'
+import NewsPreview from '../views/sendNewsBox/news-manage/NewsPreview'
+import NewsEdit from '../views/sendNewsBox/news-manage/NewsEdit'
 import { getToken } from '../utils/common'
 const routes = () => {
   // RequireAuth 组件相当于一个拦截器，是否返回被拦截的组件要听他的
@@ -89,6 +91,14 @@ const routes = () => {
             {
               path: 'category',
               element: <NewsCategory />,
+            },
+            {
+              path: 'preview/:id',
+              element: <NewsPreview />,
+            },
+            {
+              path: 'update/:id',
+              element: <NewsEdit />,
             },
           ],
         },

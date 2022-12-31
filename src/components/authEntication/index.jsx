@@ -30,7 +30,7 @@ export default function AuthEntication({ children }) {
   }
   const setPermission = () => {
     console.log('setPermission', pathname, routeArr.length)
-    if(routeArr.length === 0){
+    if (routeArr.length === 0) {
       return
     }
     let routeList =
@@ -61,7 +61,7 @@ export default function AuthEntication({ children }) {
       }
     } else if (pathname === '/') {
       setNotFound(false)
-    } else {
+    }else {
       setNotFound(true)
     }
     console.log(
@@ -92,7 +92,7 @@ export default function AuthEntication({ children }) {
   useEffect(() => {
     setPermission()
   }, [pathname])
-  if (!(notFount && noPremission)) {
+  if (!notFount && !noPremission) {
     return loading ? (
       <div className="loadingContainer">
         <Spin size="large" />

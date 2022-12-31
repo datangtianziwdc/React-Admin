@@ -10,6 +10,7 @@ import AuditList from '../../views/sendNewsBox/audit-manage/AuditList'
 import Unpublished from '../../views/sendNewsBox/publish-manage/Unpublished'
 import Published from '../../views/sendNewsBox/publish-manage/Published'
 import Sunset from '../../views/sendNewsBox/publish-manage/Sunset'
+import NewsPreview from '../../views/sendNewsBox/news-manage/NewsPreview'
 const routeMap = {
   '/home': Home,
   'user-manage/list': UserList,
@@ -18,6 +19,7 @@ const routeMap = {
   'news-manage/add': NewsAdd,
   'news-manage/draft': NewsDraft,
   'news-manage/category': NewsCategory,
+  'news-manage/preview/:id': NewsPreview,
   'audit-manage/audit': Audit,
   'audit-manage/list': AuditList,
   'publish-manage/unpublished': Unpublished,

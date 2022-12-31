@@ -1,3 +1,4 @@
+import { Badge } from 'antd'
 const isObject = (obj) => obj === Object(obj)
 const isNil = (val) => val === undefined || val === null
 const isEmpty = (val) => {
@@ -34,4 +35,16 @@ export const setToken = (info) => {
 }
 export const getToken = () => {
   return JSON.parse(localStorage.getItem('token')) || ''
+}
+export const auditMap = {
+  0: <Badge status="default" text="未审核" />,
+  1: <Badge status="processing" text="审核中" />,
+  2: <Badge status="success" text="已通过" />,
+  3: <Badge status="error" text="未通过" />,
+}
+export const publishMap = {
+  0: <Badge status="default" text="未发布" />,
+  1: <Badge status="processing" text="待发布" />,
+  2: <Badge status="success" text="已上线" />,
+  3: <Badge status="warning" text="已下线" />,
 }

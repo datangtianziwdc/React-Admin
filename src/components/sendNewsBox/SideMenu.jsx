@@ -101,13 +101,13 @@ export default function SideMenu() {
   }
   const onOpenChange = (openKeys)=>{
     console.log("onOpenChange回调",openKeys)
-    setDefaultOpenKeys(openKeys[1])
+    setOpenKeys(openKeys)
   }
   useEffect(()=>{
     setDefaultOpenKeys(['/' + location.pathname.split('/')[1]])
     setDefaultSelectedKeys([location.pathname])
     console.log("openKeys",['/' + location.pathname.split('/')[1]])
-    // setOpenKeys()
+    setOpenKeys([...openKeys,'/' + location.pathname.split('/')[1]])
   },[location.pathname])
   return (
     <Sider width={200} className="site-layout-background">
@@ -117,7 +117,8 @@ export default function SideMenu() {
           <Menu
             mode="inline"
             selectedKeys={defaultSelectedKeys}
-            openKeys={defaultOpenKeys}
+            defaultOpenKeys={defaultOpenKeys}
+            openKeys={openKeys}
             style={{ height: '100%', borderRight: 0 }}
             items={menus}
             onOpenChange={onOpenChange}

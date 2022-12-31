@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Table, Tag, Button, Modal, Switch, Space } from 'antd'
+import { Table, Button, Modal, message, Space } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import { getUserInfo } from '../../../utils/common'
+import { useNavigate } from 'react-router-dom'
 export default function NewsDraft() {
+  const [messageApi, contextHolder] = message.useMessage()
+  const navigate = useNavigate()
   const [dataSource, setDataSource] = useState([])
   const { username } = getUserInfo()
   const getData = async () => {
@@ -11,6 +14,35 @@ export default function NewsDraft() {
       `/news?author=${username}&auditState=${0}&_expand=category`
     )
     setDataSource(data)
+  }
+  const editHandle = (item) => {
+    navigate(`/news-manage/update/${item.id}`)
+  }
+  const submitHandle = (item) => {
+    Modal.confirm({
+      title: '提示',
+      icon: <ExclamationCircleOutlined />,
+      content: '确定提交审核？',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: async () => {
+        try {
+          await axios.patch(`/news/${item.id}`, {
+            auditState: 1,
+          })
+          messageApi.open({
+            type: 'success',
+            content: `提交成功`,
+          })
+          getData()
+        } catch (error) {
+          console.log('error', error)
+        }
+      },
+      onCancel: () => {
+        console.log('onCancel')
+      },
+    })
   }
   useEffect(() => {
     getData()
@@ -37,20 +69,6 @@ export default function NewsDraft() {
       },
     })
   }
-  const changeHandle = async (item) => {
-    // 如果是一级权限
-    if (item.grade === 1) {
-      await axios.patch(`/rights/${item.id}`, {
-        pagepermisson: item.pagepermisson === 1 ? 0 : 1,
-      })
-    } else {
-      await axios.patch(`/children/${item.id}`, {
-        pagepermisson: item.pagepermisson === 1 ? 0 : 1,
-      })
-    }
-    getData()
-  }
-
   const columns = [
     {
       title: 'ID',
@@ -65,6 +83,9 @@ export default function NewsDraft() {
       dataIndex: 'title',
       width: 450,
       ellipsis: true,
+      render: (title, item) => {
+        return <a href={`#/news-manage/preview/${item.id}`}>{title}</a>
+      },
     },
     {
       title: '作者',
@@ -82,17 +103,20 @@ export default function NewsDraft() {
       render: (item) => {
         return (
           <Space>
-            <Switch
-              checked={
-                item.pagepermisson === 1 || item.pagepermisson === undefined
-              }
-              disabled={item.pagepermisson === undefined}
-              checkedChildren="启用"
-              unCheckedChildren="禁用"
-              onChange={() => {
-                changeHandle(item)
-              }}
-            />
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => submitHandle(item)}
+            >
+              提交审核
+            </Button>
+            <Button
+              type="primary"
+              size="small"
+              onClick={() => editHandle(item)}
+            >
+              编辑
+            </Button>
             <Button
               danger
               type="primary"
@@ -106,5 +130,14 @@ export default function NewsDraft() {
       },
     },
   ]
-  return <Table dataSource={dataSource} columns={columns} rowKey={item=>item.id}/>
+  return (
+    <>
+      {contextHolder}
+      <Table
+        dataSource={dataSource}
+        columns={columns}
+        rowKey={(item) => item.id}
+      />
+    </>
+  )
 }
