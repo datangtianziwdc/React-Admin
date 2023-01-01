@@ -64,7 +64,7 @@ export default function NewsAdd() {
         region: userInfo.region ? userInfo.region : '全球',
         author: userInfo.username,
         roleId: userInfo.roleId,
-        auditState,
+        auditState:state,
         publishState: 0,
         createTime: Date.now(),
         star: 0,

@@ -61,11 +61,16 @@ export default function SideMenu() {
         })
         .map((item) => {
           if (item.children) {
+            console.log("走到这里",rights,item.children
+            ?.filter(
+              (e) => e.pagepermisson === 1 && rights.includes(e.key)
+            )
+            .map((e) => delObjByKey(e, 'rightId')),)
             return {
               ...item,
               children: item.children
                 ?.filter(
-                  (e) => e.pagepermisson === 1 && rights.includes(item.key)
+                  (e) => e.pagepermisson === 1 && rights.includes(e.key)
                 )
                 .map((e) => delObjByKey(e, 'rightId')),
               onClick: (e) => {
