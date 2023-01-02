@@ -12,7 +12,8 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { delObjByKey, getUserInfo } from '../../utils/common'
 import './SideMenu.scss'
-import { routerMap } from './routerMap'
+import { connect } from 'react-redux'
+import HeaderIcon from '../../assets/header.svg'
 const { Sider } = Layout
 const iconMap = {
   '/home': <HomeOutlined />,
@@ -22,12 +23,16 @@ const iconMap = {
   '/audit-manage': <AppstoreOutlined />,
   '/publish-manage': <CloudUploadOutlined />,
 }
-export default function SideMenu() {
+function SideMenu(props) {
   const navigate = useNavigate()
   const location = useLocation()
-  const [defaultSelectedKeys,setDefaultSelectedKeys] = useState([])
-  const [defaultOpenKeys,setDefaultOpenKeys] = useState(['/' + location.pathname.split('/')[1]])
-  const [openKeys,setOpenKeys] = useState(['/' + location.pathname.split('/')[1]])
+  const [defaultSelectedKeys, setDefaultSelectedKeys] = useState([])
+  const [defaultOpenKeys, setDefaultOpenKeys] = useState([
+    '/' + location.pathname.split('/')[1],
+  ])
+  const [openKeys, setOpenKeys] = useState([
+    '/' + location.pathname.split('/')[1],
+  ])
   const [menus, setMenu] = useState([])
   const {
     role: { rights },
@@ -61,17 +66,17 @@ export default function SideMenu() {
         })
         .map((item) => {
           if (item.children) {
-            console.log("走到这里",rights,item.children
-            ?.filter(
-              (e) => e.pagepermisson === 1 && rights.includes(e.key)
+            console.log(
+              '走到这里',
+              rights,
+              item.children
+                ?.filter((e) => e.pagepermisson === 1 && rights.includes(e.key))
+                .map((e) => delObjByKey(e, 'rightId'))
             )
-            .map((e) => delObjByKey(e, 'rightId')),)
             return {
               ...item,
               children: item.children
-                ?.filter(
-                  (e) => e.pagepermisson === 1 && rights.includes(e.key)
-                )
+                ?.filter((e) => e.pagepermisson === 1 && rights.includes(e.key))
                 .map((e) => delObjByKey(e, 'rightId')),
               onClick: (e) => {
                 console.log('onClick', e)
@@ -104,20 +109,26 @@ export default function SideMenu() {
         'ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open ant-menu-submenu-active ant-menu-submenu-selected'
     }
   }
-  const onOpenChange = (openKeys)=>{
-    console.log("onOpenChange回调",openKeys)
+  const onOpenChange = (openKeys) => {
+    console.log('onOpenChange回调', openKeys)
     setOpenKeys(openKeys)
   }
-  useEffect(()=>{
+  useEffect(() => {
     setDefaultOpenKeys(['/' + location.pathname.split('/')[1]])
     setDefaultSelectedKeys([location.pathname])
-    console.log("openKeys",['/' + location.pathname.split('/')[1]])
-    setOpenKeys([...openKeys,'/' + location.pathname.split('/')[1]])
-  },[location.pathname])
+    console.log('openKeys', ['/' + location.pathname.split('/')[1]])
+    setOpenKeys([...openKeys, '/' + location.pathname.split('/')[1]])
+  }, [location.pathname])
   return (
-    <Sider width={200} className="site-layout-background">
+    <Sider
+      width={200}
+      className="site-layout-background"
+      collapsed={props.isCollapsed}
+    >
       <div className="flex-col">
-        <div className="logo">全球新闻发布</div>
+        <div className="logo">
+          <div>{props.isCollapsed?'':'全球新闻发布'}</div>
+        </div>
         <div className="slider">
           <Menu
             mode="inline"
@@ -133,3 +144,9 @@ export default function SideMenu() {
     </Sider>
   )
 }
+const mapStateToProps = ({ CollapsedReducer: { isCollapsed } }) => {
+  return {
+    isCollapsed,
+  }
+}
+export default connect(mapStateToProps)(SideMenu)

@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react'
 import SideMenu from '../../components/sendNewsBox/SideMenu'
 import TopHeader from '../../components/sendNewsBox/TopHeader'
-import { useRoutes, Outlet, useNavigate, useLocation } from 'react-router-dom'
-// import routes from '../../router'
+import { Outlet, useLocation } from 'react-router-dom'
 import './SendNewsBox.scss'
 import { Layout } from 'antd'
 import Nprogress from 'nprogress'
+import { Spin } from 'antd'
 import 'nprogress/nprogress.css'
+import {connect} from 'react-redux'
 const { Content } = Layout
-export default function SendNewsBox() {
+function SendNewsBox(props) {
   console.log('SendNewsBox')
   const location = useLocation()
   // const element = useRoutes(routes)
@@ -21,17 +22,32 @@ export default function SendNewsBox() {
       <SideMenu></SideMenu>
       <Layout>
         <TopHeader></TopHeader>
-        <Content
-          className="site-layout-background"
-          style={{
-            padding: 16,
-            margin: '24px 16px',
-            minHeight: 280,
-          }}
-        >
-          <Outlet />
-        </Content>
+        <Spin wrapperClassName='spin' spinning={props.isLoading}>
+          <Content
+            className="site-layout-background"
+            style={{
+              padding: 16,
+              margin: '24px 16px',
+              minHeight: 280,
+            }}
+          >
+            <Outlet />
+          </Content>
+        </Spin>
       </Layout>
     </Layout>
   )
 }
+const mapStateToProps = ({LoadingReducer:{isLoading}} )=>{
+  return {
+    isLoading
+  }
+}
+const mapDispatchToProps = {
+  changeLoading(){
+    return {
+      type:"change_loading"
+    }
+  }
+}
+export default connect(mapStateToProps)(SendNewsBox)

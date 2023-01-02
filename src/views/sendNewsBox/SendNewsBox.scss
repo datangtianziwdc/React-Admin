@@ -1,6 +1,17 @@
-.site-layout-background{
+.site-layout-background {
     background: white;
-}
-#root{
     height: 100%;
+}
+#root {
+    height: 100%;
+}
+.spin {
+    flex: auto;
+    .ant-spin {
+        // max-height: 100% !important;
+        height: 100%;
+    }
+    .ant-spin-container{
+        height: calc(100% - 48px);
+    }
 }

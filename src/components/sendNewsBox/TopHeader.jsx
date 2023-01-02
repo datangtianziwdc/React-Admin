@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom'
 import './TopHeader.scss'
 import AvatarImg from '../../assets/avatar.gif'
 import { getUserInfo } from '../../utils/common'
+import {connect} from 'react-redux'
 const { Header } = Layout
-export default function TopHeader() {
+function TopHeader(props) {
+  console.log('TopHeader',props)
   const userInfo = getUserInfo()
   const navigate = useNavigate()
   const [api, contextHolder] = notification.useNotification()
-  const [collapsed, setCollapsed] = useState(false)
   const items = [
     { label: userInfo.role.roleName, key: 'item-1' }, // 菜单项务必填写 key
     {
@@ -28,19 +29,19 @@ export default function TopHeader() {
     },
   ]
   const changeCollapsed = () => {
-    setCollapsed(!collapsed)
-  }
-  const openNotification = () => {
-    api.open({
-      message: '消息通知',
-      description: `欢迎回来：${userInfo.username}`,
-      icon: <SmileOutlined style={{ color: '#108ee9' }} />,
-      duration: 2,
-    })
+    props.changeCollapsed()
   }
   useEffect(() => {
+    const openNotification = () => {
+      api.open({
+        message: '消息通知',
+        description: `欢迎回来：${userInfo.username}`,
+        icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+        duration: 2,
+      })
+    }
     openNotification()
-  }, [])
+  }, [api,userInfo.username])
   return (
     <>
       {contextHolder}
@@ -48,7 +49,7 @@ export default function TopHeader() {
         className="topHeader"
         style={{ padding: '0 24px', backgroundColor: 'white' }}
       >
-        {collapsed ? (
+        {props.isCollapsed ? (
           <MenuUnfoldOutlined onClick={changeCollapsed} />
         ) : (
           <MenuFoldOutlined onClick={changeCollapsed} />
@@ -68,3 +69,16 @@ export default function TopHeader() {
     </>
   )
 }
+const mapStateToProps = ({CollapsedReducer:{isCollapsed}} )=>{
+  return {
+    isCollapsed
+  }
+}
+const mapDispatchToProps = {
+  changeCollapsed(){
+    return {
+      type:"change_collapsed"
+    }
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(TopHeader)

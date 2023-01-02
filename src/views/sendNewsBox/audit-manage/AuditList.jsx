@@ -34,7 +34,8 @@ export default function AuditList() {
         try {
           axios
             .patch(`/news/${item.id}`, {
-              publishState: 2
+              publishState: 2,
+              publishTime:Date.now()
             })
             .then((res) => {
               messageApi.open({

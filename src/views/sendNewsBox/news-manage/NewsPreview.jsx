@@ -26,8 +26,8 @@ export default function NewsPreview(props) {
               {newsInfo.category.label}
             </Descriptions.Item>
             <Descriptions.Item label="发布时间">
-              {newsInfo.piblishTime
-                ? moment(newsInfo.piblishTime).format('YYYY/MM/DD HH:mm:ss')
+              {newsInfo.publishTime
+                ? moment(newsInfo.publishTime).format('YYYY/MM/DD HH:mm:ss')
                 : '--'}
             </Descriptions.Item>
             <Descriptions.Item label="区域">

@@ -58,35 +58,6 @@ export default function Audit() {
       },
     })
   }
-  const revokeHandle = (item) => {
-    Modal.confirm({
-      title: '提示',
-      icon: <ExclamationCircleOutlined />,
-      content: '确定撤销审核？',
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        try {
-          axios
-            .patch(`/news/${item.id}`, {
-              auditState: 0,
-            })
-            .then((res) => {
-              messageApi.open({
-                type: 'success',
-                content: '撤销成功',
-              })
-              getData()
-            })
-        } catch (error) {
-          console.log('error', error)
-        }
-      },
-      onCancel: () => {
-        console.log('onCancel')
-      },
-    })
-  }
   const columns = [
     {
       title: '新闻标题',

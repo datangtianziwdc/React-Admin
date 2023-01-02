@@ -4,6 +4,9 @@ import './utils/nprogress'
 import './utils/axios'
 import routes from './router'
 import AuthEntication from './components/authEntication/index'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
+import { store,persistor } from './redux/store'
 function App() {
   let element = useRoutes(routes)
   // const computedActive = ({ isActive }) => {
@@ -19,7 +22,11 @@ function App() {
           新闻
         </NavLink>
       </div> */}
-      <AuthEntication>{element}</AuthEntication>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+        <AuthEntication>{element}</AuthEntication>
+        </PersistGate>
+      </Provider>
     </>
   )
 }
