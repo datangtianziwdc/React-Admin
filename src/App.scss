@@ -78,12 +78,59 @@ html {
     }
   }
 }
+.mb10 {
+  margin-bottom: 10px;
+}
+.mb16 {
+  margin-bottom: 16px;
+}
+.pt16 {
+  padding-top: 16px;
+}
 .mb20 {
   margin-bottom: 20px;
+}
+.mr20 {
+  margin-right: 20px;
+}
+.fs16 {
+  font-size: 16px;
 }
 .fs24 {
   font-size: 24px;
 }
 .fw5 {
   font-weight: 500;
+}
+.fw6 {
+  font-weight: 600;
+}
+.c-af {
+  color: #afafaf;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.justify-c {
+  justify-content: center;
+}
+/*里面的代码可以根据自己需求去进行更改*/
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(48, 35, 229, 0.4);
 }

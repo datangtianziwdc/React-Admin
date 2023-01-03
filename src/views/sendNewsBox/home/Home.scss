@@ -1,0 +1,19 @@
+.card{
+    margin-bottom: 16px;
+    &:hover{
+        .ant-card-cover{
+            overflow: hidden;
+            img{
+                transform: scale(1.1);
+                transition: all ease .3s;
+            }
+        }
+    }
+}
+.space{
+    height: 16px;
+    width: calc(100% + 32px);
+    background-color: #f5f5f5;
+    position: relative;
+    left: -16px;
+}

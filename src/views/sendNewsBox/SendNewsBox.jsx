@@ -7,7 +7,7 @@ import { Layout } from 'antd'
 import Nprogress from 'nprogress'
 import { Spin } from 'antd'
 import 'nprogress/nprogress.css'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 const { Content } = Layout
 function SendNewsBox(props) {
   console.log('SendNewsBox')
@@ -18,11 +18,13 @@ function SendNewsBox(props) {
     Nprogress.done()
   }, [location.pathname])
   return (
-    <Layout>
+    <Layout style={{ height: '100vh' }}>
       <SideMenu></SideMenu>
-      <Layout>
+      <Layout
+        style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}
+      >
         <TopHeader></TopHeader>
-        <Spin wrapperClassName='spin' spinning={props.isLoading}>
+        <Spin wrapperClassName="spin" spinning={props.isLoading}>
           <Content
             className="site-layout-background"
             style={{
@@ -38,16 +40,16 @@ function SendNewsBox(props) {
     </Layout>
   )
 }
-const mapStateToProps = ({LoadingReducer:{isLoading}} )=>{
+const mapStateToProps = ({ LoadingReducer: { isLoading } }) => {
   return {
-    isLoading
+    isLoading,
   }
 }
 const mapDispatchToProps = {
-  changeLoading(){
+  changeLoading() {
     return {
-      type:"change_loading"
+      type: 'change_loading',
     }
-  }
+  },
 }
 export default connect(mapStateToProps)(SendNewsBox)

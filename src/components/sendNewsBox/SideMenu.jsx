@@ -122,6 +122,7 @@ function SideMenu(props) {
   return (
     <Sider
       width={200}
+      style={{height: '100vh'}}
       className="site-layout-background"
       collapsed={props.isCollapsed}
     >
