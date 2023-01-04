@@ -433,7 +433,7 @@
     },
     {
       "id": 3,
-      "label": "科学技术2",
+      "label": "科学技术",
       "value": "科学技术"
     },
     {
@@ -1124,6 +1124,22 @@
       "view": 0,
       "id": 78,
       "publishTime": 1672650027568
+    },
+    {
+      "title": "军事世界",
+      "category": 4,
+      "categoryId": 4,
+      "content": "<p>军事世界军事世界军事世界</p>\n",
+      "region": "全球",
+      "author": "admin",
+      "roleId": 1,
+      "auditState": 2,
+      "publishState": 2,
+      "createTime": 1672837798293,
+      "star": 0,
+      "view": 0,
+      "id": 79,
+      "publishTime": 1672837819222
     }
   ]
 }
